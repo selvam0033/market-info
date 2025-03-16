@@ -1,0 +1,140 @@
+<html>
+<head>
+<script>
+let counter =0;
+setInterval(function() {
+counter++;
+if (counter == 30) {
+counter=0;
+stock();
+crypto();
+  };
+  
+}, 500);
+
+
+function stock(){
+const xhttpr = new XMLHttpRequest();
+xhttpr.open('GET', 'http://localhost:8080/trending/stocks', true);
+xhttpr.send();
+xhttpr.onload = ()=> {
+  if (xhttpr.status === 200) {
+      const response = JSON.parse(xhttpr.response);
+	  if(response.length>0) {
+	  const myTable = document.querySelector('table#stocksPixelCanvas')
+	  myTable.innerHTML = ''; 
+	 let header = myTable.insertRow()
+	       header.insertCell().textContent = 'Stock'
+           header.insertCell().textContent = 'Price'
+           header.insertCell().textContent = 'TrendingTime'
+           header.insertCell().textContent = 'Status'
+           header.insertCell().textContent = 'Date'
+response.forEach(obj => {    
+       let row = myTable.insertRow()        
+           row.insertCell().textContent = obj.name
+           row.insertCell().textContent = obj.price
+           row.insertCell().textContent = obj.trendingTime
+           row.insertCell().textContent = obj.trending
+           row.insertCell().textContent = obj.currentDate       
+    }); 
+} else {
+    const header = document.getElementById('dynamicHeader'); 
+	 header.innerHTML = 'No stocks found'; 
+}	
+	
+   } else {  
+       console.log('Error');   
+   }
+  }
+};
+
+
+
+function crypto(){
+const xhttpr = new XMLHttpRequest();
+xhttpr.open('GET', 'http://localhost:8080/trending/crypto', true);
+xhttpr.send();
+xhttpr.onload = ()=> {
+  if (xhttpr.status === 200) {
+      const response = JSON.parse(xhttpr.response);
+	    if(response.length>0) {
+	  const myTable = document.querySelector('table#cryptoPixelCanvas')
+	  myTable.innerHTML = ''; 
+	  let header = myTable.insertRow()
+	       header.insertCell().textContent = 'Crypto'
+           header.insertCell().textContent = 'Price'
+           header.insertCell().textContent = 'TrendingTime'
+           header.insertCell().textContent = 'Status'
+           header.insertCell().textContent = 'Date'
+	  
+response.forEach(obj => {    
+       let row = myTable.insertRow()        
+           row.insertCell().textContent = obj.name
+           row.insertCell().textContent = obj.price
+           row.insertCell().textContent = obj.trendingTime
+           row.insertCell().textContent = obj.trending
+           row.insertCell().textContent = obj.currentDate       
+    });      
+	} else {
+	 const header = document.getElementById('dynamicHeader'); 
+	 header.innerHTML = 'No crypto found'; 
+	}
+   } else {   
+        console.log('Error');      
+   }
+  }
+};
+
+</script>
+<style>
+
+table#stocksPixelCanvas {
+  border-collapse: collapse;
+  font-size: 15px;
+}
+table#stocksPixelCanvas td {
+  padding: 5px;
+  width: 50px;
+  height: 20px;
+  border: 1px solid black;
+}
+
+table#cryptoPixelCanvas {
+  border-collapse: collapse;
+  font-size: 15px;
+}
+table#cryptoPixelCanvas td {
+  padding: 5px;
+  width: 50px;
+  height: 20px;
+  border: 1px solid black;
+}
+
+</style>
+</head>
+<body>
+<h2>Trending Stock</h2>
+<a href="https://www.tradingview.com/">Tradingview</a>&nbsp; &nbsp; 
+<a href="https://finance.yahoo.com/markets/stocks/trending/">Yahoo-stock-trending</a>&nbsp; &nbsp; 
+<a href="https://finance.yahoo.com/markets/crypto/trending/">Yahoo-crypto-trending</a>&nbsp; &nbsp; 
+<a href="https://www.bls.gov/cpi/">Cbi Data</a>&nbsp; &nbsp; 
+<a href="https://robinhood.com/">Robinhood</a>&nbsp; &nbsp; 
+<a href="https://www.coinglass.com/">Coinglass</a>&nbsp; &nbsp; 
+<a href="https://www.youtube.com/@ChartAction">Youtube</a>&nbsp; &nbsp; 
+<a href="https://web.whatsapp.com/">Whatsapp</a>&nbsp; &nbsp;
+<br/><br/>
+<h1 id="dynamicHeader">Welcome to My Stock World!</h1> <br/>
+<table>
+<tr>
+<td>
+<table id="stocksPixelCanvas"></table>
+</td>
+<td>
+</td>
+<td>
+ <table id="cryptoPixelCanvas"></table>
+</td>
+</tr>
+</table>
+</body>
+</html>
