@@ -31,7 +31,7 @@ public class DocService {
             float price = Float.parseFloat(val[0].replace(",",""));
             if (price <= showBelow) {
                 if (!mapStock.containsKey(name)) {
-                    mapStock.put(name, new Stock(name, price,currentTime,"NEW",sdf.format(new Date()),getAverage(name)));
+                    mapStock.put(name, new Stock(name, price,currentTime,"NEW",sdf.format(new Date()),""));
                     Thread thread = new Thread(() -> Alert.play(name,"stock"));
                     thread.start();
                 } else {
@@ -72,7 +72,7 @@ public class DocService {
             float price = Float.parseFloat(val[0].replace(",",""));
             if (price <= showBelow) {
                 if (!mapCrypto.containsKey(name)) {
-                    mapCrypto.put(name, new Stock(name, price,currentTime,"NEW",sdf.format(new Date()),getAverage(name)));
+                    mapCrypto.put(name, new Stock(name, price,currentTime,"NEW",sdf.format(new Date()),""));
                     Thread thread = new Thread(() -> Alert.play(name,"crypto"));
                     thread.start();
                 } else {
