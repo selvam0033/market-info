@@ -7,14 +7,17 @@ public class Stock {
     private LocalTime trendingTime;
     private String trending;
     private String currentDate;
+    private String average;
 
 
-    public Stock(String name, Float price, LocalTime trendingTime, String trending, String currentDate) {
+    public Stock(String name, Float price, LocalTime trendingTime, String trending, String currentDate,String average) {
         this.name = name;
         this.price = price;
         this.trendingTime = trendingTime;
         this.trending = trending;
         this.currentDate = currentDate;
+        this.average = average;
+
     }
 
     public String getName() {
@@ -58,4 +61,11 @@ public class Stock {
         this.currentDate = currentDate;
     }
 
+    public String getAverage() {
+        return average;
+    }
+
+    public void setAverage(String average) {
+        this.average = average;
+    }
 }
