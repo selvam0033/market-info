@@ -1,6 +1,6 @@
 package market.stock.trending.info.controller;
 import market.stock.trending.info.services.DocService;
-import market.stock.trending.info.vo.Stock;
+import market.stock.trending.info.vo.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,14 +14,14 @@ public class Controller {
     DocService docService;
 
     @GetMapping("/trending/stocks")
-    public List<Stock> getTrendingStock() {
+    public List<Trade> getTrendingStock() {
         return docService.getStocks();
     }
 
 
 
     @GetMapping("/trending/crypto")
-    public List<Stock> getTrendingCrypto() {
+    public List<Trade> getTrendingCrypto() {
         return docService.getCrypto();
     }
 

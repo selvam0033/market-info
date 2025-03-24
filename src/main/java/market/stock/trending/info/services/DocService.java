@@ -1,7 +1,7 @@
 package market.stock.trending.info.services;
 import market.stock.trending.info.alert.Alert;
 import market.stock.trending.info.util.Constants;
-import market.stock.trending.info.vo.Stock;
+import market.stock.trending.info.vo.Trade;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
@@ -15,12 +15,12 @@ import java.util.*;
 
 @Service
 public class DocService {
-    Map<String, Stock> mapStock = new HashMap<>();
-    Map<String, Stock> mapCrypto = new HashMap<>();
+    Map<String, Trade> mapStock = new HashMap<>();
+    Map<String, Trade> mapCrypto = new HashMap<>();
     LocalTime currentTime = LocalTime.now();
     Integer showBelow =1;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-    public List<Stock> getStocks() {
+    public List<Trade> getStocks() {
         Document doc = getDocument(Constants.stock);
         Elements table = doc.select("tbody");
         Elements rows = table.select("tr");
@@ -31,11 +31,11 @@ public class DocService {
             float price = Float.parseFloat(val[0].replace(",",""));
             if (price <= showBelow) {
                 if (!mapStock.containsKey(name)) {
-                    mapStock.put(name, new Stock(name, price,currentTime,"NEW",sdf.format(new Date()),""));
+                    mapStock.put(name, new Trade(name, price,currentTime,"NEW",sdf.format(new Date()),""));
                     Thread thread = new Thread(() -> Alert.play(name,"stock"));
                     thread.start();
                 } else {
-                    Stock stock = mapStock.get(name);
+                    Trade stock = mapStock.get(name);
                     int current = currentTime.getHour();
                     int previous = stock.getTrendingTime().getHour();
                     if (current - previous >= 1)
@@ -45,7 +45,6 @@ public class DocService {
         }
         if(mapStock.isEmpty())
             return new ArrayList<>();
-
         return new ArrayList<>(mapStock.values());
     }
 
@@ -61,7 +60,7 @@ public class DocService {
         return String.valueOf(average);
     }
 
-    public List<Stock> getCrypto() {
+    public List<Trade> getCrypto() {
         Document doc = getDocument(Constants.crypto);
         Elements table = doc.select("tbody");
         Elements rows = table.select("tr");
@@ -72,13 +71,13 @@ public class DocService {
             float price = Float.parseFloat(val[0].replace(",",""));
             if (price <= showBelow) {
                 if (!mapCrypto.containsKey(name)) {
-                    mapCrypto.put(name, new Stock(name, price,currentTime,"NEW",sdf.format(new Date()),""));
+                    mapCrypto.put(name, new Trade(name, price,currentTime,"NEW",sdf.format(new Date()),""));
                     Thread thread = new Thread(() -> Alert.play(name,"crypto"));
                     thread.start();
                 } else {
-                    Stock stock = mapCrypto.get(name);
+                    Trade crypto = mapCrypto.get(name);
                     int current = currentTime.getHour();
-                    int previous = stock.getTrendingTime().getHour();
+                    int previous = crypto.getTrendingTime().getHour();
                     if (current - previous >= 1)
                         mapCrypto.get(name).setTrending("");
                 }
@@ -90,13 +89,11 @@ public class DocService {
     }
 
     private Document getDocument(String url){
-        Document doc = null;
         try {
-            doc = Jsoup.connect(url).get();
+           return Jsoup.connect(url).get();
         }catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return doc;
     }
 
 }

@@ -1,7 +1,7 @@
 package market.stock.trending.info.vo;
 
 import java.time.LocalTime;
-public class Stock {
+public class Trade {
     private String name;
     private Float price;
     private LocalTime trendingTime;
@@ -10,7 +10,7 @@ public class Stock {
     private String average;
 
 
-    public Stock(String name, Float price, LocalTime trendingTime, String trending, String currentDate,String average) {
+    public Trade(String name, Float price, LocalTime trendingTime, String trending, String currentDate, String average) {
         this.name = name;
         this.price = price;
         this.trendingTime = trendingTime;
