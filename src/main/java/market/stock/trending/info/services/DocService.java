@@ -12,13 +12,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class DocService {
     Map<String, Trade> mapStock = new HashMap<>();
     Map<String, Trade> mapCrypto = new HashMap<>();
     LocalTime currentTime = LocalTime.now();
-    Integer showBelow =1;
+    Integer showBelow =5;
     SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public List<Trade> getStocks() {
         Document doc = getDocument(Constants.stock);
@@ -45,7 +46,8 @@ public class DocService {
         }
         if(mapStock.isEmpty())
             return new ArrayList<>();
-        return new ArrayList<>(mapStock.values());
+        return new ArrayList<>(mapStock.values()).stream().sorted(Comparator.comparing(Trade::getPrice)).
+                collect(Collectors.toList());
     }
 
 
@@ -85,7 +87,11 @@ public class DocService {
         }
         if(mapCrypto.isEmpty())
             return new ArrayList<>();
-        return new ArrayList<>(mapCrypto.values());
+        return new ArrayList<>(mapCrypto.values()).stream().sorted(Comparator.comparing(Trade::getPrice)).
+                collect(Collectors.toList());
+
+
+
     }
 
     private Document getDocument(String url){
